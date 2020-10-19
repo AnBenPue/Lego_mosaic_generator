@@ -1,4 +1,3 @@
-import argparse
 import json
 
 import cv2
@@ -19,8 +18,7 @@ def selectCroppingRefPoints(event, x, y, flags, param):
             refPt.append((x, y))
 
     # Record the mouse position when the left mouse button is released
-    elif event == cv2.EVENT_LBUTTONUP:  
-        print(refPt)      
+    elif event == cv2.EVENT_LBUTTONUP:   
         # Add mouse position to the reference points
         refPt.append((x, y))
         # Get bounding box given the current reference points, the BB is defined by the smalles 
@@ -75,7 +73,7 @@ with open('./conf.json', 'r') as myfile:
 
 # Initialize the canvas that we will use for our design
 canvas_data = loaded_json['canvas_config']
-mosaic = canvas((canvas_data['blocks_per_row'], canvas_data['blocks_per_row']))
+mosaic = canvas((canvas_data['blocks_per_row'], canvas_data['blocks_per_row']), canvas_data["valid_pieces"])
 
 # Get the data regarding the pixel-art designs that we want to add to the canvas
 designs_data = loaded_json['designs']
@@ -104,5 +102,6 @@ for element in designs_data:
     mosaic.addDesign((pos_x,pos_y), design)
     mosaic.visualize()
 
+mosaic.fill()
 # close all open windows
 cv2.destroyAllWindows()
