@@ -2,13 +2,164 @@
     "canvas_config": {
         "blocks_per_row": 100,
         "blocks_per_col": 100,
-        "valid_pieces": ["1x1", "1x2", "1x3", "1x4", "2x2", "2x3", "2x4"]
+        "valid_pieces": {
+            "1x1": {
+                "colors": {
+                    "red": [
+                        255,
+                        0,
+                        0
+                    ],
+                    "green": [
+                        0,
+                        255,
+                        0
+                    ],
+                    "blue": [
+                        0,
+                        0,
+                        255
+                    ]
+                }
+            },
+            "1x2": {
+                "colors": {
+                    "red": [
+                        255,
+                        0,
+                        0
+                    ],
+                    "green": [
+                        0,
+                        255,
+                        0
+                    ],
+                    "blue": [
+                        0,
+                        0,
+                        255
+                    ]
+                }
+            },
+            "1x3": {
+                "colors":  {
+                    "red": [
+                        255,
+                        0,
+                        0
+                    ],
+                    "green": [
+                        0,
+                        255,
+                        0
+                    ],
+                    "blue": [
+                        0,
+                        0,
+                        255
+                    ]
+                }
+            },
+            "1x4": {
+                "colors":  {
+                    "red": [
+                        255,
+                        0,
+                        0
+                    ],
+                    "green": [
+                        0,
+                        255,
+                        0
+                    ],
+                    "blue": [
+                        0,
+                        0,
+                        255
+                    ]
+                }
+            },
+            "2x2": {
+                "colors":  {
+                    "red": [
+                        255,
+                        0,
+                        0
+                    ],
+                    "green": [
+                        0,
+                        255,
+                        0
+                    ],
+                    "blue": [
+                        0,
+                        0,
+                        255
+                    ]
+                }
+            },
+            "2x3": {
+                "colors": {
+                    "red": [
+                        255,
+                        0,
+                        0
+                    ],
+                    "green": [
+                        0,
+                        255,
+                        0
+                    ],
+                    "blue": [
+                        0,
+                        0,
+                        255
+                    ]
+                }
+            },
+            "2x4": {
+                "colors": {
+                    "red": [
+                        255,
+                        0,
+                        0
+                    ],
+                    "green": [
+                        0,
+                        255,
+                        0
+                    ],
+                    "blue": [
+                        0,
+                        0,
+                        255
+                    ]
+                }
+            }
+        }
     },
     "designs": {
         "hearth": {
             "path": "./images/designs/pix_art_sample_1.png",
-            "size": [15,12],
-            "position": [10,10]
+            "size": [
+                15,
+                12
+            ],
+            "position": [
+                5,
+                5
+            ]
+        },
+        "peach": {
+            "path": "./images/designs/pix_art_sample_2.png",
+            "size": [
+                24,
+                20
+            ],
+            "position": [
+                20,
+                20
+            ]
         }
     }
 }

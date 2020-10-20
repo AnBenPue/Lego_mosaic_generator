@@ -54,7 +54,6 @@ def cropImage(image):
             return None
 
         elif key == ord("s"):
-            print("INFO: Saving results...")
             # if there are two reference points, then crop the region of interest
             # from teh image and display it
             if len(cropPt) == 2:
@@ -79,8 +78,7 @@ mosaic = canvas((canvas_data['blocks_per_row'], canvas_data['blocks_per_row']), 
 designs_data = loaded_json['designs']
 for element in designs_data:
     # Load the data regarding the current design:
-    blocks_per_row = designs_data[element]['size'][0]
-    blocks_per_col = designs_data[element]['size'][1]
+    size = (designs_data[element]['size'][0], designs_data[element]['size'][1])
     pos_x = designs_data[element]['position'][0]
     pos_y = designs_data[element]['position'][1]
 
@@ -97,11 +95,13 @@ for element in designs_data:
         refPt.clear()
         cropPt.clear()
     # Extract the design from the roi
-    design = mosaic.parseDesign(roi, blocks_per_row, blocks_per_col)
+    design = mosaic.parseDesign(roi, size)
     # Add design to canvas and visualize the result
     mosaic.addDesign((pos_x,pos_y), design)
     mosaic.visualize()
 
 mosaic.fill()
+mosaic.visualize()
+mosaic.save()
 # close all open windows
 cv2.destroyAllWindows()

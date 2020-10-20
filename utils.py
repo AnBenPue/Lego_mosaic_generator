@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import json
+import random   
 
 class canvas(object):
     def  __init__(self, size: tuple, valid_pieces):
@@ -21,140 +22,210 @@ class canvas(object):
         anch_y = np.arange(piece_size/2, self.height, piece_size)
         for _x in range(size[0]):
             for _y in range(size[1]):
-                self.anch_state[_x,_y] = 0
                 self.anch_pos[_x, _y] = np.asarray([anch_x[_x], anch_y[_y]])
                 cv2.circle(self.img, (int(anch_x[_x]),int(anch_y[_y])), 1, (0,0,255), -1) 
         
-        self.size = size
-        self.piece_size = piece_size
+        # In order to keep track of the amount of each different pieces, we will create a nested dictionary. 
+        # The first level covers the different types of pieces and the second level covers the different colors for each piece
         self.pieces_counter  = dict.fromkeys(valid_pieces)
         for e in self.pieces_counter:
-            self.pieces_counter.update({e: 0})  
+            valid_colors  = dict.fromkeys(valid_pieces[e]['colors'])
+            for c in valid_colors:
+                valid_colors.update({c: 0}) 
+            self.pieces_counter.update({e: valid_colors}) 
+        
+        # Save global variables for later use
+        self.valid_pieces = valid_pieces
+        self.size = size
+        self.piece_size = piece_size
 
-    def incrementCounter(self, key):
-        value = self.pieces_counter[key]
+    def incrementCounter(self, key, color_key):
+        """
+        Increment the counter for a specific piece and color. 
+                
+        Parameters
+        ----------
+        key: str
+            Type of piece
+        color_key: str
+            Color of the piece
+        """ 
+        value = self.pieces_counter[key][color_key]
         value = value + 1
-        self.pieces_counter.update({key: value})
+        self.pieces_counter[key].update({color_key: value})
 
+    def addPieceToCanvas(self, pos, size, color):
+        """
+        Draw a new piece in the canvas.
+                
+        Parameters
+        ----------
+        pos: tuple
+            Position of the top-left corner of the piece.
+        size: tuple
+            Number of rows and columns for the piece
+        color: tuple
+            Color of the piece
+        """
+        corner1 = np.asarray(self.anch_pos[pos[0], pos[1]])
+        corner1 = (int(corner1[0]), int(corner1[1]))
+        corner2 = np.asarray([corner1[0] + (self.piece_size*size[1]), corner1[1] + (self.piece_size*size[0])])
+        corner2 = (int(corner2[0]), int(corner2[1]))              
+            
+        cv2.rectangle(self.img, corner1, corner2, color, -1)
+        cv2.rectangle(self.img, corner1, corner2, (0,0,0), 1)
+
+    def checkIfFits(self, pos, size):
+        """
+        Check if a new piece of the specified size would fit in the canvas.
+                
+        Parameters
+        ----------
+        pos: tuple
+            Position of the top-left corner of the piece.
+        size: tuple
+            Number of rows and columns for the piece
+
+        Returns
+        ----------
+        bool
+            True if the piece fits, False otherwise
+        """
+        if (pos[0] + size[0]-1) < (self.size[0]) and (pos[1] + size[1]-1) < (self.size[1]):
+            for _r in range(size[0]):
+                for _c in range(size[1]):
+                    if self.anch_state[pos[0] + _r, pos[1] + _c] == 1:
+                        return False
+            return True
+        return False
+
+    def getPieceColor(self, key):
+        valid_colors = self.valid_pieces[key]['colors']
+        color_key = random.choice(list(valid_colors.keys()))     
+        selected_color = valid_colors[color_key]
+        return (selected_color[0],selected_color[1],selected_color[2]), color_key   
+
+    def getPiece(self, pos):
+        """
+        Find the piece that fits at a given position of the canvas
+                
+        Parameters
+        ----------
+        pos: tuple
+            Position of the top-left corner of the piece.
+        """
+
+        possible_keys = ['2x4','2x3','2x2','1x4','1x3','1x2','1x1']
+        for key in possible_keys: 
+            if key in self.pieces_counter.keys():
+                status = self.addPiece(key, pos)
+
+    def addPiece(self, key, pos):
+        """
+        Find the piece that fits at a given position of the canvas
+                
+        Parameters
+        ----------
+        key: str
+            Type of piece
+        pos: tuple
+            Position of the top-left corner of the piece.
+        """
+        size = (int(key[0]), int(key[2]))
+        if self.checkIfFits(pos, size):
+            # Update the anchors state: 1 means that the anchor is being used
+            self.anch_state[pos[0]:(pos[0]+size[1]), pos[1]:(pos[1]+size[0])] = 1 
+            # Get the piece color
+            piece_color, color_key = self.getPieceColor(key) 
+            # Add the piece to the visualization of the canvas and update counter       
+            self.addPieceToCanvas(pos, size, piece_color) 
+            self.incrementCounter(key, color_key) 
+  
     def fill(self):
-
-        for _x in range(self.size[0]-1):
-            for _y in range(self.size[1]-1):
-                
-                # Check that 1x1 can be used 
-                # Check that the current position is free
-                if ('1x1' in self.pieces_counter) and self.anch_state[_x+1, _y] == 0:   
-                    current_piece = '1x1'
-                    self.anch_state[_x, _y] = 1
-                    continue
-
-                # Check that 1x2 can be used   
-                # Check that we are not at the right edge  
-                # Check that the next position is free
-                if '1x2' in self.pieces_counter  and self.width >= (_x+1) and self.anch_state[_x+1, _y] == 0:     
-                    current_piece = '1x2'
-                    self.anch_state[_x+1, _y] = 1
-                    continue
-
-                # Check that 2x2 can be used
-                # Check that we are not at the bottom edge
-                # Check that the next position is free
-                # Check that the next position is free                            
-                if '2x2' in self.pieces_counter and self.height >= (_y+1) and self.anch_state[_x, _y+1] == 0  and self.anch_state[_x+1, _y+1] == 0:    
-                    current_piece = '2x2'
-                    self.anch_state[_x, _y+1] = 1
-                    self.anch_state[_x+1, _y+1] = 1
-                    continue
-
-                # Check that 2x3 can be used
-                # Check that we are not at the right edge 
-                # Check that the next position is free
-                # Check that the next position is free
-                if '2x3' in self.pieces_counter and self.width >= (_x+2) and self.anch_state[_x+2, _y] == 0  and self.anch_state[_x+2, _y+1] == 0:    
-                    current_piece = '2x3'
-                    self.anch_state[_x+2, _y] = 1
-                    self.anch_state[_x+2, _y+1] = 1
-                    continue
-                
-                
-                '''        
-
-                                          
-                        
-
-                           
-
-                                if '2x4' in self.pieces_counter      and  # Check that 2x4 can be used
-                                    self.width >= (_x+3)             and  # Check that we are not at the right edge 
-                                    self.anch_state[_x+3, _y] == 0   and  # Check that the next position is free
-                                    self.anch_state[_x+3, _y+1] == 0:     # Check that the next position is free
-
-                                    current_piece = 2x4
-                                    self.anch_state[_x+3, _y] = 1
-                                    self.anch_state[_x+3, _y+1] = 1
-                                        
-                        elif '1x3' in self.pieces_counter  and  # Check that 1x3 can be used 
-                            self.width >= (_x+2)           and  # Check that we are not at the right edge 
-                            self.anch_state[_x+2, _y] == 0:     # Check that the next position is free
-                            
-                            current_piece = 1x3
-                            self.anch_state[_x+2, _y] = 1
-                                            
-                            if '1x4' in self.pieces_counter  and   # Check that 1x4 can be used   
-                                self.width >= (_x+3)         and   # Check that we are not at the right edge  
-                                self.anch_state[_x+3, _y] == 0:    # Check that the next position is free
-                                
-                                current_piece = 1x4
-                                self.anch_state[_x+3, _y] = 1
-                '''
-        print(current_piece)
+        """
+        Fill all the blank spaces of the canvas with pieces.
+        """
+        for _x in range(self.size[0]):
+            for _y in range(self.size[1]):
+                self.getPiece((_x,_y))
+    
+    def save(self):
+        """
+        Save the data regarding the canvas: Number of pices of each case
+        """
+        with open('summary.json', 'w') as outfile:
+            json.dump(self.pieces_counter, outfile, indent=4)
                         
     def visualize(self):
+        """
+        Visualize the current state of the canvas
+        """
         cv2.namedWindow('Canvas',cv2.WINDOW_NORMAL)
         cv2.imshow("Canvas", self.img)
         cv2.waitKey(0)           
 
+    def parseDesign(self, image, size):
+        """
+        Given and image with a pixel art design and its size (number of blocks per roww and column).
+         Parse the design in order to convert it to bricks.
+                
+        Parameters
+        ----------
+        image: numpy.ndarray
+            image with the design
+        design: numpy.ndarray
+            Matrix with the colors for each block of the design
 
-    def addDesign(self, offset, design):
-        [num_rows, num_cols, _] = design.shape
-
-        for _x in range(num_rows):
-                for _y in range(num_cols):
-
-                    corner1 = np.asarray(self.anch_pos[offset[0]+_x, offset[1]+_y]).astype(int)
-                    corner1 = (int(corner1[0]), int(corner1[1]))
-                    corner2 = np.asarray([corner1[0] + self.piece_size, corner1[1] + self.piece_size]).astype(int)
-                    corner2 = (int(corner2[0]), int(corner2[1]))
-
-                    piece_color = np.asarray(design[_x, _y]).astype(int)
-                    piece_color = (int(piece_color[0]), int(piece_color[1]), int(piece_color[2]))
-                       
-                    cv2.rectangle(self.img, corner1, corner2, piece_color, -1)
-                    cv2.rectangle(self.img, corner1, corner2, (0,0,0), 1)
-    
-    def parseDesign(self, roi, blocks_per_row, blocks_per_col):
+        Returns
+        ----------
+        design: numpy.ndarray
+            Matrix with the colors for each block of the design
+        """
         # Once the design has been selected, we need to select a number of anchor points used for extracting the color of each block
-        [height, width, _] = roi.shape
+        [height, width, _] = image.shape
         # Get the position increments between each anchor point
-        inc_x = width/blocks_per_row
-        inc_y = height/blocks_per_col
+        inc_x = width/size[0]
+        inc_y = height/size[1]
         # Define the x and y positions of the anchor points 
         anch_x = np.arange(inc_x/2, width, inc_x)
         anch_y = np.arange(inc_y/2, height, inc_y)
 
         # Initialize container to save the design 
-        design = np.zeros(shape=(blocks_per_row, blocks_per_col, 3))
-        clone = roi.copy()
+        design = np.zeros(shape=(size[0], size[1], 3))
+        clone = image.copy()
 
         # Go through all the anchor points and get the color of the pixel at its position. 
         # For visualization, add a circle on top.
-        for _x in range(blocks_per_row):
-            for _y in range(blocks_per_col):
+        for _x in range(size[0]):
+            for _y in range(size[1]):
                 design[_x, _y] = np.asarray(clone[int(anch_y[_y]), int(anch_x[_x]), :])
-                cv2.circle(roi, (int(anch_x[_x]),int(anch_y[_y])), 1, (0,0,255), -1) 
-
+                cv2.circle(image, (int(anch_x[_x]),int(anch_y[_y])), 1, (0,0,255), -1) 
+        # Visualize the original image with the anchor points on top. Each anchor should align with the center of the block.
         cv2.namedWindow('Design and anchor points',cv2.WINDOW_NORMAL)
-        cv2.imshow("Design and anchor points", roi)
+        cv2.imshow("Design and anchor points", image)
         cv2.waitKey(0)
         
         return design
+
+    def addDesign(self, pos, design):
+        """
+        Add a pixel art design to the canvas
+                
+        Parameters
+        ----------
+        pos: tuple
+            Position of the top-left corner of the design
+        design: numpy.ndarray
+            Matrix with the colors for each block of the design
+        """
+        # Get the size of the design
+        size = design.shape
+
+        # Loop through all the blocks of the design
+        for _x in range(size[0]):
+                for _y in range(size[1]):
+                    piece_color = np.asarray(design[_x, _y])
+                    piece_color = (int(piece_color[0]), int(piece_color[1]), int(piece_color[2]))  
+                    self.addPieceToCanvas((pos[0]+_x, pos[1]+_y), (1,1), piece_color)
+        # Update the state of the anchors used by the design 
+        self.anch_state[pos[0]:(pos[0]+size[0]), pos[1]:(pos[1]+size[1])] = 1
