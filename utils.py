@@ -32,14 +32,43 @@ class canvas(object):
         for e in self.pieces_counter:    
             valid_colors  = dict.fromkeys(valid_pieces[e])      
             for c in valid_colors: 
-                valid_colors.update({c: {'code':valid_pieces[e][c]["code"], 'counter':0}}) 
-            self.pieces_counter.update({e: valid_colors}) 
-        print(self.pieces_counter)
+                valid_colors.update({c:0}) 
+            self.pieces_counter.update({e: valid_colors})
         
         # Save global variables for later use
         self.valid_pieces = valid_pieces
         self.size = size
         self.piece_size = piece_size
+
+        self.colors_dictionary = {'Bright Yellow':[255,205,3], 
+                                  "Bright Yellowish Green":[154,202,60],
+                                  "Sand Green":[111,148,122],
+                                  "Medium Blue":[72,158,206],
+                                  "Bright Blue":[0,108,183],
+                                  "Medium Azur":[0,190,211],
+                                  "Earth Blue":[0,57,94],
+                                  "Bright Bluish Green":[0,143,155],
+                                  "Bright Orange":[245,125,32],
+                                  "Reddish Brown":[105,46,20],
+                                  "Medium Nougat":[175,116,70],
+                                  "Brick Yellow":[221,196,142],
+                                  "Black":[0,0,0],
+                                  "Bright Reddish Violet":[181,28,125],
+                                  "Light Purple":[246,173,205],
+                                  "Bright Red":[221,26,33],
+                                  "New Dark Red":[127,19,27],
+                                  "Dark Stone Grey":[100,103,101],
+                                  "Medium Stone Grey":[160,161,159],
+                                  "Medium Lilac":[76,47,146],
+                                  "White":[244,244,244],
+                                  "Dark Green":[0,0,0],
+                                  "Dark Azur":[0,0,0],
+                                  "Earth Green":[0,0,0],
+                                  "Flame Yellowish Orange":[0,0,0],
+                                  "Medium Lavender":[0,0,0],
+                                  "Sand Yellow":[0,0,0],
+                                  "Bright Purple":[0,0,0],
+                                  "Cool Yellow":[0,0,0]}
 
     def incrementCounter(self, key, color_key):
         """
@@ -51,10 +80,10 @@ class canvas(object):
             Type of piece
         color_key: str
             Color of the piece
-        """ 
-        value = self.pieces_counter[key][color_key]['counter']
+        """         
+        value = self.pieces_counter[key][color_key]
         value = value + 1
-        self.pieces_counter[key][color_key].update({'counter': value})
+        self.pieces_counter[key].update({color_key: value})
 
     def addPieceToCanvas(self, pos, size, color):
         """
@@ -100,15 +129,9 @@ class canvas(object):
                         return False
             return True
 
-    def getPieceColor(self, key):
-        
-        valid_colors = list()
-        for color in self.valid_pieces[key]:
-            color_key = color
-            color = self.valid_pieces[key][color]['code']
-            valid_colors.append((color[2], color[1], color[0]))
-
-        color = random.choice(list(valid_colors)) 
+    def getPieceColor(self, key):               
+        color_key = random.choice(list(self.pieces_counter[key].keys()))
+        color = self.colors_dictionary[color_key] 
         return color, color_key   
 
     def addPiece(self, pos):
@@ -158,6 +181,17 @@ class canvas(object):
         """
         with open('summary.json', 'w') as outfile:
             json.dump(self.pieces_counter, outfile, indent=4)
+        
+
+        print(self.valid_pieces)
+        total = 0
+        for piece_key in self.pieces_counter.keys():
+            for color in self.valid_pieces[piece_key]:
+                num_of_pieces = self.pieces_counter[piece_key][color]
+                piece_price = self.valid_pieces[piece_key][color]
+                subtotal = num_of_pieces * piece_price
+                total = total + subtotal
+        print(total)
                         
     def visualize(self):
         """

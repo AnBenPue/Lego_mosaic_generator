@@ -1,61 +1,200 @@
 {
     "canvas_config": {
-        "blocks_per_row": 100,
-        "blocks_per_col": 60,
+        "blocks_per_row": 71,
+        "blocks_per_col": 71,
         "valid_pieces": {
             "1x1": {
-                "Bright Yellow": {
-                    "code": [
-                        255,
-                        255,
-                        0
-                    ],
-                    "price": 0.56,
-                    "id": "300524/3005"
-                },
-                "Bright Yellowish Green": {
-                    "code": [
-                        255,
-                        255,
-                        0
-                    ],
-                    "price": 0.56,
-                    "id": "4220634/3005
-                    "
-                }
+                "Bright Yellow": 0.56,
+                "Bright Yellowish Green": 0.56,
+                "Sand Green": 0.56,
+                "Medium Blue": 0.56,
+                "Bright Blue": 0.56,
+                "Medium Azur": 0.56,
+                "Earth Blue": 0.56,
+                "Bright Bluish Green": 0.56,
+                "Bright Orange": 0.56,
+                "Reddish Brown": 0.56,
+                "Medium Nougat": 0.56,
+                "Brick Yellow": 0.56,
+                "Black": 0.56,
+                "Bright Reddish Violet": 0.56,
+                "Light Purple": 0.56,
+                "Bright Red": 0.56,
+                "New Dark Red": 0.56,
+                "Dark Stone Grey": 0.56,
+                "Medium Stone Grey": 0.56,
+                "Medium Lilac": 0.56,
+                "White": 0.56
+            },
+            "1x2": {
+                "Bright Yellow": 0.84,
+                "Bright Yellowish Green": 0.84,
+                "Cool Yellow": 0.84,
+                "Flame Yellowish Orange": 0.84,
+                "Bright Red": 0.84,
+                "New Dark Red": 0.84,
+                "Sand Green": 0.84,
+                "Earth Green": 0.84,
+                "Spring Yellowish Green": 0.84,
+                "Dark Green": 0.84,
+                "Bright Reddish Violet": 0.84,
+                "Light Purple": 0.84,
+                "Bright Purple": 0.84,
+                "Bright Orange": 0.84,
+                "White": 0.84,
+                "Medium Lilac": 0.84,
+                "Medium Azur": 0.84,
+                "Medium Blue": 0.84,
+                "Bright Bluish Green": 0.84,
+                "Dark Azur": 0.84,
+                "Earth Blue": 0.84,
+                "Bright Blue": 0.84,
+                "Reddish Brown": 0.84,
+                "Brick Yellow": 0.84,
+                "Sand Yellow": 0.84,
+                "Dark Stone Grey": 0.84,
+                "Medium Stone Grey": 0.84,
+                "Black": 0.84
+            },
+            "1x3": {
+                "Black": 1.13,
+                "Bright Bluish Green": 1.13,
+                "Bright Red": 1.13,
+                "Dark Green": 1.13,
+                "Brick Yellow": 1.13,
+                "Bright Yellow": 1.13,
+                "Reddish Brown": 1.13,
+                "Dark Stone Grey": 1.13,
+                "Bright Blue": 1.13,
+                "White": 1.13,
+                "Medium Stone Grey": 1.13
+            },
+            "1x4": {
+                "White": 1.20,
+                "Bright Purple": 1.20,
+                "Bright Blue": 1.20,
+                "Medium Blue": 1.20,
+                "Cool Yellow": 1.20,
+                "Dark Green": 1.20,
+                "Reddish Brown": 1.20,
+                "Bright Yellow": 1.20,
+                "Medium Azur": 1.20,
+                "New Dark Red": 1.20,
+                "Bright Yellowish Green": 1.20,
+                "Dark Stone Grey": 1.20,
+                "Flame Yellowish Orange": 1.20,
+                "Black": 1.20,
+                "Brick Yellow": 1.20,
+                "Earth Blue": 1.20,
+                "Light Purple": 1.20,
+                "Bright Orange": 1.20,
+                "Earth Green": 1.20,
+                "Medium Stone Grey": 1.20,
+                "Bright Red": 1.20
+            },
+            "2x2": {
+                "White": 1.13,
+                "Black": 1.13,
+                "Brick Yellow": 1.13,
+                "Bright Yellow": 1.13,
+                "Bright Blue": 1.13,
+                "Dark Stone Grey": 1.13,
+                "Bright Purple": 1.13,
+                "Medium Stone Grey": 1.13,
+                "Earth Blue": 1.13,
+                "Bright Red": 1.13,
+                "Medium Lilac": 1.13,
+                "Reddish Brown": 1.13,
+                "Dark Green": 1.13,
+                "Light Purple": 1.13,
+                "Medium Azur": 1.13,
+                "New Dark Red": 1.13,
+                "Bright Orange": 1.13,
+                "Bright Yellowish Green": 1.13
+            },
+            "2x3": {
+                "White": 1.35,
+                "Black": 1.35,
+                "Brick Yellow": 1.35,
+                "Medium Stone Grey": 1.35,
+                "Bright Blue": 1.35,
+                "Bright Orange": 1.35,
+                "Dark Stone Grey": 1.35,
+                "Bright Yellowish Green": 1.35,
+                "Dark Green": 1.35,
+                "Bright Red": 1.35,
+                "Reddish Brown": 1.35
+            },
+            "2x4": {
+                "White": 1.68,
+                "Earth Green": 1.68,
+                "Medium Azur": 1.68,
+                "Bright Yellow": 1.68,
+                "Medium Stone Grey": 1.68,
+                "Bright Blue": 1.68,
+                "Dark Azur": 1.68,
+                "Black": 1.68,
+                "Dark Green": 1.68,
+                "Brick Yellow": 1.68,
+                "Dark Stone Grey": 1.68,
+                "Medium Lavender": 1.68,
+                "Bright Orange": 1.68,
+                "Flame Yellowish Orange": 1.68,
+                "Reddish Brown": 1.68,
+                "Bright Yellowish Green": 1.68,
+                "Bright Red": 1.68,
+                "Light Purple": 1.68,
+                "Sand Yellow": 1.68,
+                "Medium Lilac": 1.68
             }
+        }
+    },
+    "designs": {
+        "hearth": {
+            "path": "./images/designs/pix_art_sample_1.png",
+            "size": [
+                15,
+                12
+            ],
+            "position": [
+                5,
+                5
+            ]
         },
-        "1x2": {},
-        "1x3": {},
-        "1x4": {},
-        "2x2": {},
-        "2x3": {},
-        "2x4": {}
+        "peach": {
+            "path": "./images/designs/pix_art_sample_2.png",
+            "size": [
+                24,
+                20
+            ],
+            "position": [
+                20,
+                20
+            ]
+        }
     },
-"designs": {
-},
-"des": {
-    "hearth": {
-        "path": "./images/designs/pix_art_sample_1.png",
-        "size": [
-            15,
-            12
-        ],
-        "position": [
-            5,
-            5
-        ]
-    },
-    "peach": {
-        "path": "./images/designs/pix_art_sample_2.png",
-        "size": [
-            24,
-            20
-        ],
-        "position": [
-            20,
-            20
-        ]
+    "des": {
+        "hearth": {
+            "path": "./images/designs/pix_art_sample_1.png",
+            "size": [
+                15,
+                12
+            ],
+            "position": [
+                5,
+                5
+            ]
+        },
+        "peach": {
+            "path": "./images/designs/pix_art_sample_2.png",
+            "size": [
+                24,
+                20
+            ],
+            "position": [
+                20,
+                20
+            ]
+        }
     }
-}
 }
