@@ -12,6 +12,7 @@ class canvas(object):
         # Initiliaze the canvas
         self.img = np.zeros((self.height,self.width,3), np.uint8)
         self.img[:,:, :] = [200, 255, 255]
+        self.clone = self.img.copy()
         
         # Initialize container to save the anchor points for the canvas. 
         self.anch_pos = np.zeros(shape=(size[0], size[1], 2))
@@ -91,13 +92,12 @@ class canvas(object):
         bool
             True if the piece fits, False otherwise
         """
-        if (pos[0] + size[0]-1) < (self.size[0]) and (pos[1] + size[1]-1) < (self.size[1]):
+        if (pos[0] + size[1]) <= (self.size[0]) and (pos[1] + size[0]) <= (self.size[1]):
             for _r in range(size[0]):
                 for _c in range(size[1]):
-                    if self.anch_state[pos[0] + _r, pos[1] + _c] == 1:
+                    if self.anch_state[pos[0] + _c, pos[1] + _r] == 1:
                         return False
             return True
-        return False
 
     def getPieceColor(self, key):
         valid_colors = self.valid_pieces[key]['colors']
@@ -105,7 +105,7 @@ class canvas(object):
         selected_color = valid_colors[color_key]
         return (selected_color[0],selected_color[1],selected_color[2]), color_key   
 
-    def getPiece(self, pos):
+    def addPiece(self, pos):
         """
         Find the piece that fits at a given position of the canvas
                 
@@ -114,40 +114,37 @@ class canvas(object):
         pos: tuple
             Position of the top-left corner of the piece.
         """
-
+        # List of all the possible sizes that can be used in the canvas. 
+        # The order is important, whenever a piece fits, the search will stop. 
         possible_keys = ['2x4','2x3','2x2','1x4','1x3','1x2','1x1']
+        
         for key in possible_keys: 
-            if key in self.pieces_counter.keys():
-                status = self.addPiece(key, pos)
+            if key in self.pieces_counter.keys():             
 
-    def addPiece(self, key, pos):
-        """
-        Find the piece that fits at a given position of the canvas
-                
-        Parameters
-        ----------
-        key: str
-            Type of piece
-        pos: tuple
-            Position of the top-left corner of the piece.
-        """
-        size = (int(key[0]), int(key[2]))
-        if self.checkIfFits(pos, size):
-            # Update the anchors state: 1 means that the anchor is being used
-            self.anch_state[pos[0]:(pos[0]+size[1]), pos[1]:(pos[1]+size[0])] = 1 
-            # Get the piece color
-            piece_color, color_key = self.getPieceColor(key) 
-            # Add the piece to the visualization of the canvas and update counter       
-            self.addPieceToCanvas(pos, size, piece_color) 
-            self.incrementCounter(key, color_key) 
+                size = (int(key[0]), int(key[2]))
+                if self.checkIfFits(pos, size):
+                    # Update the anchors state: 1 means that the anchor is being used
+                    self.anch_state[pos[0]:(pos[0]+size[1]), pos[1]:(pos[1]+size[0])] = 1 
+                    # Get the piece color
+                    piece_color, color_key = self.getPieceColor(key) 
+                    # Add the piece to the visualization of the canvas and update counter       
+                    self.addPieceToCanvas(pos, size, piece_color) 
+                    self.incrementCounter(key, color_key) 
+                    return True
+        return False
+     
   
     def fill(self):
         """
         Fill all the blank spaces of the canvas with pieces.
         """
+        # Loop through all the anchors in the canvas
         for _x in range(self.size[0]):
             for _y in range(self.size[1]):
-                self.getPiece((_x,_y))
+                # If the anchor is free, find a piece that fits on the available space
+                if self.anch_state[_x,_y] == 0:
+                    self.addPiece((_x,_y))
+
     
     def save(self):
         """
@@ -229,3 +226,20 @@ class canvas(object):
                     self.addPieceToCanvas((pos[0]+_x, pos[1]+_y), (1,1), piece_color)
         # Update the state of the anchors used by the design 
         self.anch_state[pos[0]:(pos[0]+size[0]), pos[1]:(pos[1]+size[1])] = 1
+
+    def visualizeAnchorsState(self):
+        temp = self.clone.copy()
+
+        for _x in range(self.size[0]):
+            for _y in range(self.size[1]):
+
+                pos = (int(self.anch_pos[_x, _y][0]), int(self.anch_pos[_x, _y][1]))
+                if self.anch_state[_x, _y] == 0:
+                    color = (255,0,0)
+                else:
+                    color = (0,255,0)
+                cv2.circle(temp, pos, 4, color, -1) 
+        
+        cv2.namedWindow('Anchors state',cv2.WINDOW_NORMAL)
+        cv2.imshow("Anchors state", temp)
+        cv2.waitKey(0)
