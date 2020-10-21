@@ -29,11 +29,12 @@ class canvas(object):
         # In order to keep track of the amount of each different pieces, we will create a nested dictionary. 
         # The first level covers the different types of pieces and the second level covers the different colors for each piece
         self.pieces_counter  = dict.fromkeys(valid_pieces)
-        for e in self.pieces_counter:
-            valid_colors  = dict.fromkeys(valid_pieces[e]['colors'])
-            for c in valid_colors:
-                valid_colors.update({c: 0}) 
+        for e in self.pieces_counter:    
+            valid_colors  = dict.fromkeys(valid_pieces[e])      
+            for c in valid_colors: 
+                valid_colors.update({c: {'code':valid_pieces[e][c]["code"], 'counter':0}}) 
             self.pieces_counter.update({e: valid_colors}) 
+        print(self.pieces_counter)
         
         # Save global variables for later use
         self.valid_pieces = valid_pieces
@@ -51,9 +52,9 @@ class canvas(object):
         color_key: str
             Color of the piece
         """ 
-        value = self.pieces_counter[key][color_key]
+        value = self.pieces_counter[key][color_key]['counter']
         value = value + 1
-        self.pieces_counter[key].update({color_key: value})
+        self.pieces_counter[key][color_key].update({'counter': value})
 
     def addPieceToCanvas(self, pos, size, color):
         """
@@ -100,10 +101,15 @@ class canvas(object):
             return True
 
     def getPieceColor(self, key):
-        valid_colors = self.valid_pieces[key]['colors']
-        color_key = random.choice(list(valid_colors.keys()))     
-        selected_color = valid_colors[color_key]
-        return (selected_color[0],selected_color[1],selected_color[2]), color_key   
+        
+        valid_colors = list()
+        for color in self.valid_pieces[key]:
+            color_key = color
+            color = self.valid_pieces[key][color]['code']
+            valid_colors.append((color[2], color[1], color[0]))
+
+        color = random.choice(list(valid_colors)) 
+        return color, color_key   
 
     def addPiece(self, pos):
         """

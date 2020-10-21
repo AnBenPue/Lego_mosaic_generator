@@ -4,196 +4,58 @@
         "blocks_per_col": 60,
         "valid_pieces": {
             "1x1": {
-                "colors": {
-                    "red": [
+                "Bright Yellow": {
+                    "code": [
                         255,
-                        0,
-                        0
-                    ],
-                    "green": [
-                        0,
                         255,
                         0
                     ],
-                    "blue": [
-                        0,
-                        0,
-                        255
-                    ],
-                    "black": [
-                        0,
-                        0,
-                        0
-                    ],
-                    "white": [
+                    "price": 0.56,
+                    "id": "300524/3005"
+                },
+                "Bright Yellowish Green": {
+                    "code": [
                         255,
-                        255,
-                        255
-                    ]
-                }
-            },
-            "1x2": {
-                "colors": {
-                    "red": [
-                        255,
-                        0,
-                        0
-                    ],
-                    "green": [
-                        0,
                         255,
                         0
                     ],
-                    "blue": [
-                        0,
-                        0,
-                        255
-                    ]
-                }
-            },
-            "1x3": {
-                "colors": {
-                    "red": [
-                        255,
-                        0,
-                        0
-                    ],
-                    "green": [
-                        0,
-                        255,
-                        0
-                    ],
-                    "blue": [
-                        0,
-                        0,
-                        255
-                    ]
-                }
-            },
-            "1x4": {
-                "colors": {
-                    "red": [
-                        255,
-                        0,
-                        0
-                    ],
-                    "green": [
-                        0,
-                        255,
-                        0
-                    ],
-                    "blue": [
-                        0,
-                        0,
-                        255
-                    ]
-                }
-            },
-            "2x2": {
-                "colors": {
-                    "red": [
-                        255,
-                        0,
-                        0
-                    ],
-                    "green": [
-                        0,
-                        255,
-                        0
-                    ],
-                    "blue": [
-                        0,
-                        0,
-                        255
-                    ]
-                }
-            },
-            "2x3": {
-                "colors": {
-                    "red": [
-                        255,
-                        0,
-                        0
-                    ],
-                    "green": [
-                        0,
-                        255,
-                        0
-                    ],
-                    "blue": [
-                        0,
-                        0,
-                        255
-                    ]
-                }
-            },
-            "2x4": {
-                "colors": {
-                    "red": [
-                        255,
-                        0,
-                        0
-                    ],
-                    "green": [
-                        0,
-                        255,
-                        0
-                    ],
-                    "blue": [
-                        0,
-                        0,
-                        255
-                    ]
+                    "price": 0.56,
+                    "id": "4220634/3005
+                    "
                 }
             }
-        }
-    },
-    "designs": {
-        "hearth": {
-            "path": "./images/designs/pix_art_sample_1.png",
-            "size": [
-                15,
-                12
-            ],
-            "position": [
-                5,
-                5
-            ]
         },
-        "peach": {
-            "path": "./images/designs/pix_art_sample_2.png",
-            "size": [
-                24,
-                20
-            ],
-            "position": [
-                20,
-                20
-            ]
-        }
+        "1x2": {},
+        "1x3": {},
+        "1x4": {},
+        "2x2": {},
+        "2x3": {},
+        "2x4": {}
     },
-    "des": {
-        "hearth": {
-            "path": "./images/designs/pix_art_sample_1.png",
-            "size": [
-                15,
-                12
-            ],
-            "position": [
-                5,
-                5
-            ]
-        },
-        "peach": {
-            "path": "./images/designs/pix_art_sample_2.png",
-            "size": [
-                24,
-                20
-            ],
-            "position": [
-                20,
-                20
-            ]
-        }
+"designs": {
+},
+"des": {
+    "hearth": {
+        "path": "./images/designs/pix_art_sample_1.png",
+        "size": [
+            15,
+            12
+        ],
+        "position": [
+            5,
+            5
+        ]
+    },
+    "peach": {
+        "path": "./images/designs/pix_art_sample_2.png",
+        "size": [
+            24,
+            20
+        ],
+        "position": [
+            20,
+            20
+        ]
     }
+}
 }
