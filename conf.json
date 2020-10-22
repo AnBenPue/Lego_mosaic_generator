@@ -171,29 +171,16 @@
                 20,
                 20
             ]
-        }
-    },
-    "des": {
-        "hearth": {
-            "path": "./images/designs/pix_art_sample_1.png",
-            "size": [
-                15,
-                12
-            ],
-            "position": [
-                5,
-                5
-            ]
         },
-        "peach": {
-            "path": "./images/designs/pix_art_sample_2.png",
+        "squirtle": {
+            "path": "./images/designs/pix_art_sample_3.png",
             "size": [
-                24,
-                20
+                20,
+                17
             ],
             "position": [
-                20,
-                20
+                40,
+                30
             ]
         }
     }

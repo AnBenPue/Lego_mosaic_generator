@@ -99,7 +99,7 @@ for element in designs_data:
     # Extract the design from the roi
     design = mosaic.parseDesign(roi, size)
     # Add design to canvas and visualize the result
-    mosaic.addDesign((pos_x,pos_y), design)
+    mosaic.addDesign((pos_x,pos_y), design, keep_white=False)
     mosaic.visualize()
 
 mosaic.fill()

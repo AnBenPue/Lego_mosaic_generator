@@ -243,7 +243,7 @@ class canvas(object):
         
         return design
 
-    def addDesign(self, pos, design):
+    def addDesign(self, pos, design, keep_white):
         """
         Add a pixel art design to the canvas
                 
@@ -253,6 +253,8 @@ class canvas(object):
             Position of the top-left corner of the design
         design: numpy.ndarray
             Matrix with the colors for each block of the design
+        keep_white: bool
+            Define if the white bricks count as part of the design or only the background.
         """
         # Get the size of the design
         size = design.shape
@@ -261,10 +263,45 @@ class canvas(object):
         for _x in range(size[0]):
                 for _y in range(size[1]):
                     piece_color = np.asarray(design[_x, _y])
-                    piece_color = (int(piece_color[0]), int(piece_color[1]), int(piece_color[2]))  
-                    self.addPieceToCanvas((pos[0]+_x, pos[1]+_y), (1,1), piece_color)
-        # Update the state of the anchors used by the design 
-        self.anch_state[pos[0]:(pos[0]+size[0]), pos[1]:(pos[1]+size[1])] = 1
+                    piece_color = (int(piece_color[2]), int(piece_color[1]), int(piece_color[0]))                      
+                    if keep_white is False and self.isWhite(piece_color):
+                        continue
+                    else:
+                        piece_key = '1x1'
+                        piece_color, color_key = self.getClosestColor(piece_key, piece_color)
+                        piece_color = (int(piece_color[2]), int(piece_color[1]), int(piece_color[0]))   
+                        self.addPieceToCanvas((pos[0]+_x, pos[1]+_y), (1,1), piece_color)
+                        # Update the state of the anchors used by the design 
+                        self.anch_state[pos[0]+_x, pos[1]+_y] = 1
+                        self.incrementCounter(piece_key, color_key)
+
+    def getClosestColor(self, piece_key, color):
+        print('-->' + str(color))
+        d_min = 100000
+        color_match = None
+        color_match_key = None
+        for color_key in self.pieces_counter[piece_key].keys():
+            color_db = self.colors_dictionary[color_key]
+            d =   np.sqrt(((color[0]-color_db[0]))**2  + ((color[1]-color_db[1]))**2 + ((color[2]-color_db[2]))**2)
+            print(d)
+            if d < d_min:
+                d_min = d
+                color_match = color_db
+                color_match_key = color_key
+
+                print(color_match)
+                print(color_match_key)
+        print('-->')
+        print(color_match)
+        print(color_match_key)
+
+        return color_match, color_match_key
+
+    def isWhite(self, color):
+        for c in color:
+            if c < 250:
+                return False
+        return True
 
     def visualizeAnchorsState(self):
         temp = self.clone.copy()
