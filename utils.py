@@ -355,17 +355,15 @@ class canvas(object):
             cv2.putText(img, piece_key, text_pos, cv2.FONT_HERSHEY_SIMPLEX,1, (0, 0, 0, 0), 2) 
 
             for color_key in valid_colors:
-                if color_key in valid_colors: 
+                if color_key in self.pieces_counter[piece_key].keys(): 
                     color = self.colors_dictionary[color_key]
                     color = (color[2], color[1], color[0])
-                else:
-                    color = (255,255,255)
+                    
+                    corner1 = (int(anchors_x[x_count]), int(anchors_y[y_count]))
+                    corner2 = (int(corner1[0]+margin_x*0.8), int(corner1[1]+margin_y*0.8))
 
-                corner1 = (int(anchors_x[x_count]), int(anchors_y[y_count]))
-                corner2 = (int(corner1[0]+margin_x*0.8), int(corner1[1]+margin_y*0.8))
-
-                cv2.rectangle(img, corner1, corner2, color, -1)
-                cv2.rectangle(img, corner1, corner2, (0,0,0), 1)
+                    cv2.rectangle(img, corner1, corner2, color, -1)
+                    cv2.rectangle(img, corner1, corner2, (0,0,0), 1)
 
                 y_count = y_count + 1
                 
