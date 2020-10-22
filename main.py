@@ -73,6 +73,8 @@ with open('./conf.json', 'r') as myfile:
 # Initialize the canvas that we will use for our design
 canvas_data = loaded_json['canvas_config']
 mosaic = canvas((canvas_data['blocks_per_row'], canvas_data['blocks_per_col']), canvas_data["valid_pieces"])
+mosaic.visualizeColorPalette()
+
 
 # Get the data regarding the pixel-art designs that we want to add to the canvas
 designs_data = loaded_json['designs']

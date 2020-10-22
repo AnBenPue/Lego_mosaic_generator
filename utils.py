@@ -40,35 +40,35 @@ class canvas(object):
         self.size = size
         self.piece_size = piece_size
 
-        self.colors_dictionary = {'Bright Yellow':[255,205,3], 
-                                  "Bright Yellowish Green":[154,202,60],
-                                  "Sand Green":[111,148,122],
-                                  "Medium Blue":[72,158,206],
-                                  "Bright Blue":[0,108,183],
-                                  "Medium Azur":[0,190,211],
-                                  "Earth Blue":[0,57,94],
-                                  "Bright Bluish Green":[0,143,155],
-                                  "Bright Orange":[245,125,32],
-                                  "Reddish Brown":[105,46,20],
-                                  "Medium Nougat":[175,116,70],
-                                  "Brick Yellow":[221,196,142],
-                                  "Black":[0,0,0],
-                                  "Bright Reddish Violet":[181,28,125],
-                                  "Light Purple":[246,173,205],
-                                  "Bright Red":[221,26,33],
-                                  "New Dark Red":[127,19,27],
-                                  "Dark Stone Grey":[100,103,101],
-                                  "Medium Stone Grey":[160,161,159],
-                                  "Medium Lilac":[76,47,146],
-                                  "White":[244,244,244],
-                                  "Dark Green":[0,0,0],
-                                  "Dark Azur":[0,0,0],
-                                  "Earth Green":[0,0,0],
-                                  "Flame Yellowish Orange":[0,0,0],
-                                  "Medium Lavender":[0,0,0],
-                                  "Sand Yellow":[0,0,0],
-                                  "Bright Purple":[0,0,0],
-                                  "Cool Yellow":[0,0,0]}
+        self.colors_dictionary = {'White':[244,244,244],
+                                  'Bright Yellow':[250,200,10], 
+                                  'Bright Yellowish Green':[165,202,24],
+                                  'Sand Green':[112,142,124],
+                                  'Medium Blue':[62,149,182],
+                                  'Bright Blue':[30,90,168],
+                                  'Medium Azur':[104,195,226],
+                                  'Earth Blue':[25,50,90],
+                                  'Bright Bluish Green':[6,157,159],
+                                  'Bright Orange':[214,121,35],
+                                  'Reddish Brown':[95,49,9],
+                                  'Medium Nougat':[170,125,85],
+                                  'Brick Yellow':[204,185,141],
+                                  'Black':[0,0,0],
+                                  'Bright Reddish Violet':[144,31,118],
+                                  'Light Purple':[255,158,205],
+                                  'Bright Red':[180,0,0],
+                                  'New Dark Red':[114,0,18],
+                                  'Dark Stone Grey':[100,100,100],
+                                  'Medium Stone Grey':[150,150,150],
+                                  'Medium Lilac':[68,26,145],
+                                  'Dark Green':[0,133,43],
+                                  'Dark Azur':[70,155,195],
+                                  'Earth Green':[0,69,26],
+                                  'Flame Yellowish Orange':[252,172,0],
+                                  'Medium Lavender':[160,110,185],
+                                  'Sand Yellow':[137,125,98],
+                                  'Bright Purple':[200,80,155],
+                                  'Cool Yellow':[255,236,108]}
 
     def incrementCounter(self, key, color_key):
         """
@@ -132,6 +132,7 @@ class canvas(object):
     def getPieceColor(self, key):               
         color_key = random.choice(list(self.pieces_counter[key].keys()))
         color = self.colors_dictionary[color_key] 
+        color = (color[2], color[1], color[0])
         return color, color_key   
 
     def addPiece(self, pos):
@@ -182,8 +183,6 @@ class canvas(object):
         with open('summary.json', 'w') as outfile:
             json.dump(self.pieces_counter, outfile, indent=4)
         
-
-        print(self.valid_pieces)
         total = 0
         for piece_key in self.pieces_counter.keys():
             for color in self.valid_pieces[piece_key]:
@@ -281,5 +280,67 @@ class canvas(object):
                 cv2.circle(temp, pos, 4, color, -1) 
         
         cv2.namedWindow('Anchors state',cv2.WINDOW_NORMAL)
-        cv2.imshow("Anchors state", temp)
+        cv2.imshow('Anchors state', temp)
         cv2.waitKey(0)
+
+    def visualizeColorPalette(self):
+
+        valid_bricks = self.pieces_counter.keys()
+        valid_colors = self.colors_dictionary.keys()
+
+        # Define the position of the anchor points for each rectangle
+        margin_x = 80
+        x_init = margin_x/2
+        x_end = x_init + margin_x * len(valid_bricks)
+        anchors_x = np.arange(x_init, x_end, margin_x)
+
+        margin_y = margin_x/2
+        y_init = margin_y
+        y_end = y_init + margin_y*len(valid_colors)
+        anchors_y = np.arange(y_init, y_end, margin_y)
+
+        height = int(margin_y * len(valid_colors) + y_init)
+        width =  int(margin_x * len(valid_bricks) + x_init) + 400
+
+        img = np.zeros((height, width,3), np.uint8)
+        img[:,:, :] = [250, 250, 255]
+        
+        x_count = 0
+        for color_key in valid_colors:
+            text_pos = int(anchors_x[len(anchors_x)-1]+margin_x), int(anchors_y[x_count]+margin_y*0.6)
+            cv2.putText(img, color_key, text_pos, cv2.FONT_HERSHEY_SIMPLEX,1, (0, 0, 0, 0), 2) 
+            x_count = x_count + 1
+ 
+        x_count = 0
+        y_count = 0
+        for piece_key in valid_bricks:       
+            text_pos = int(anchors_x[x_count]+margin_x*0.1), int(anchors_y[y_count]-margin_y*0.2)
+            cv2.putText(img, piece_key, text_pos, cv2.FONT_HERSHEY_SIMPLEX,1, (0, 0, 0, 0), 2) 
+
+            for color_key in valid_colors:
+                if color_key in valid_colors: 
+                    color = self.colors_dictionary[color_key]
+                    color = (color[2], color[1], color[0])
+                else:
+                    color = (255,255,255)
+
+                corner1 = (int(anchors_x[x_count]), int(anchors_y[y_count]))
+                corner2 = (int(corner1[0]+margin_x*0.8), int(corner1[1]+margin_y*0.8))
+
+                cv2.rectangle(img, corner1, corner2, color, -1)
+                cv2.rectangle(img, corner1, corner2, (0,0,0), 1)
+
+                y_count = y_count + 1
+                
+            x_count = x_count + 1
+            y_count = 0
+
+        cv2.namedWindow('Color Palette',cv2.WINDOW_NORMAL)
+        cv2.imshow('Color Palette', img)
+        cv2.waitKey(0)
+        
+        
+
+
+
+
