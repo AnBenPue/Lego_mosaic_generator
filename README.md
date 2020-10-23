@@ -68,17 +68,17 @@ The first thing that will appear is the **Color Palette** showing the available 
 The following step is the parsing of the designs, this is, we need to select the bounding box for the design in order to generate the anchor points that will be used to extract the color information and then convert it to Lego bricks. It is important that the number of bricks per row and column is correct, if not, it may cause a misplacement of the anchor points which will cause the parsing of the design to fail.
 <p align="center">
   <a>
-    <img src="images/design_corner_selection.png
-    " width="400"  alt="Logo">
+    <img src="images/design_corner_selection.png" width="400"  alt="Logo">
   </a>
 </p>
+
+
 
 After repeating the previous step for all the designs, the canvas should show them in its desired position. The last step consists on filling the empty part of the canvas with bricks.
 
 <p align="center">
   <a>
-    <img src="images/designs_and_result.png
-    " width=400"  alt="Logo">
+    <img src="images/designs_and_result.png" width=400"  alt="Logo">
   </a>
 </p>
 
