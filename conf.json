@@ -152,6 +152,7 @@
     "designs": {
         "hearth": {
             "path": "./images/designs/pix_art_sample_1.png",
+            "keep white": false,
             "size": [
                 15,
                 12
@@ -163,6 +164,7 @@
         },
         "peach": {
             "path": "./images/designs/pix_art_sample_2.png",
+            "keep white": false,
             "size": [
                 24,
                 20
@@ -172,16 +174,42 @@
                 20
             ]
         },
-        "squirtle": {
-            "path": "./images/designs/pix_art_sample_3.png",
+        "avocado": {
+            "path": "./images/designs/pix_art_sample_3.jpg",
+            "keep white": false,
             "size": [
-                20,
-                17
+                13,
+                19
             ],
             "position": [
-                40,
-                30
+                50,
+                10
+            ]
+        },
+        "mario": {
+            "path": "./images/designs/pix_art_sample_4.png",
+            "keep white": false,
+            "size": [
+                13,
+                16
+            ],
+            "position": [
+                10,
+                50
+            ]
+        },
+        "bender": {
+            "path": "./images/designs/pix_art_sample_5.png",
+            "keep white": true,
+            "size": [
+                13,
+                25
+            ],
+            "position": [
+                50,
+                40
             ]
         }
     }
 }
+

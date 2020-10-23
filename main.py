@@ -21,7 +21,7 @@ def selectCroppingRefPoints(event, x, y, flags, param):
     elif event == cv2.EVENT_LBUTTONUP:   
         # Add mouse position to the reference points
         refPt.append((x, y))
-        # Get bounding box given the current reference points, the BB is defined by the smalles 
+        # Get bounding box given the current reference points, the BB is defined by the smallest 
         # box that encapsulates all the reference points
         reference_points = np.asarray(refPt)
         cropPt = [(np.min(reference_points[:,0]), np.min(reference_points[:,1]))]
@@ -83,11 +83,12 @@ for element in designs_data:
     size = (designs_data[element]['size'][0], designs_data[element]['size'][1])
     pos_x = designs_data[element]['position'][0]
     pos_y = designs_data[element]['position'][1]
+    keep_white_blocks = designs_data[element]['keep white']
 
     # When the reset button is pressed, cropImage will return None and we load the image again. 
     # ToDo: originally I wanted to do the reset process inside the cropping function, however, it didn't work. 
     # The image was reset but then I was unable to draw the reference rectangles. It would be nice to do it inside 
-    # the function and avoid the wjile loop
+    # the function and avoid the while loop
     roi = None
     while roi is None:
         image = cv2.imread(designs_data[element]['path'])
@@ -99,7 +100,7 @@ for element in designs_data:
     # Extract the design from the roi
     design = mosaic.parseDesign(roi, size)
     # Add design to canvas and visualize the result
-    mosaic.addDesign((pos_x,pos_y), design, keep_white=False)
+    mosaic.addDesign((pos_x,pos_y), design, keep_white_blocks)
     mosaic.visualize()
 
 mosaic.fill()
