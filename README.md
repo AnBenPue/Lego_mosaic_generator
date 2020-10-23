@@ -69,7 +69,7 @@ The following step is the parsing of the designs, this is, we need to select the
 <p align="center">
   <a>
     <img src="images/design_corner_selection.png
-    " width="800"  alt="Logo">
+    " width="400"  alt="Logo">
   </a>
 </p>
 
@@ -78,7 +78,7 @@ After repeating the previous step for all the designs, the canvas should show th
 <p align="center">
   <a>
     <img src="images/designs_and_result.png
-    " width="800"  alt="Logo">
+    " width=400"  alt="Logo">
   </a>
 </p>
 
